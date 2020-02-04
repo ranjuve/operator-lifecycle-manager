@@ -19,8 +19,8 @@ kubectl apply -f ${url}/crds.yaml
 kubectl apply -f ${url}/olm.yaml
 
 # wait for deployments to be ready
-kubectl rollout status -w deployment/olm-operator --namespace="${namespace}"
-kubectl rollout status -w deployment/catalog-operator --namespace="${namespace}"
+kubectl rollout status -w deployment/olm-operator --namespace="${namespace} --validate=false"
+kubectl rollout status -w deployment/catalog-operator --namespace="${namespace} --validate=false"
 
 retries=50
 until [[ $retries == 0 || $new_csv_phase == "Succeeded" ]]; do
@@ -38,4 +38,4 @@ if [ $retries == 0 ]; then
     exit 1
 fi
 
-kubectl rollout status -w deployment/packageserver --namespace="${namespace}"
+kubectl rollout status -w deployment/packageserver --namespace="${namespace} --validate=false"
